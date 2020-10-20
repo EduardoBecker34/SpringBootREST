@@ -1,8 +1,11 @@
 package br.com.eduardo.request.converters;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class NumberConverter {
 
-	public static Double convertToDouble(String strNumber) {
+	public Double convertToDouble(String strNumber) {
 		if (strNumber == null)
 			return 0D;
 
@@ -14,7 +17,7 @@ public class NumberConverter {
 		return 0D;
 	}
 
-	public static boolean isNumeric(String strNumber) {
+	public boolean isNumeric(String strNumber) {
 		if (strNumber == null)
 			return false;
 

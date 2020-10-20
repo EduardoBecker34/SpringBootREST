@@ -16,6 +16,13 @@ public class PersonService {
 		return person;
 	}
 
+	public Person updatePerson(Person person) {
+		return person;
+	}
+
+	public void deletePerson(String id) {
+	}
+
 	public Person findById(String id) {
 		Person person = new Person();
 
