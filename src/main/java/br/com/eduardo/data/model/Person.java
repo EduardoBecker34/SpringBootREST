@@ -1,4 +1,4 @@
-package br.com.eduardo.model;
+package br.com.eduardo.data.model;
 
 import java.io.Serializable;
 
@@ -26,7 +26,7 @@ public class Person implements Serializable {
 	private String lastName;
 
 	@Column(nullable = false, length = 100)
-	private String addres;
+	private String address;
 
 	@Column(nullable = false, length = 6)
 	private String gender;
@@ -58,12 +58,12 @@ public class Person implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getAddres() {
-		return addres;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAddres(String addres) {
-		this.addres = addres;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getGender() {
@@ -78,7 +78,7 @@ public class Person implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((addres == null) ? 0 : addres.hashCode());
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -95,10 +95,10 @@ public class Person implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
-		if (addres == null) {
-			if (other.addres != null)
+		if (address == null) {
+			if (other.address != null)
 				return false;
-		} else if (!addres.equals(other.addres))
+		} else if (!address.equals(other.address))
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)

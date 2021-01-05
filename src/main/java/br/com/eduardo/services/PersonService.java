@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.eduardo.converter.DozerConverter;
+import br.com.eduardo.data.model.Person;
+import br.com.eduardo.data.vo.PersonVO;
 import br.com.eduardo.exception.ResourceNotFoundException;
-import br.com.eduardo.model.Person;
 import br.com.eduardo.repository.PersonRepository;
 
 @Service
@@ -15,30 +17,34 @@ public class PersonService {
 	@Autowired
 	PersonRepository repository;
 
-	public Person findById(Long id) {
-		return repository.findById(id)
+	public PersonVO findById(Long id) {
+		var entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
+		
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 
-	public List<Person> findAll() {
-		return repository.findAll();
+	public List<PersonVO> findAll() {
+		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
 	}
 
-	public Person createPerson(Person person) {
-		repository.save(person);
-		return person;
+	public PersonVO createPerson(PersonVO person) {
+		var entity = DozerConverter.parseObject(person, Person.class);
+		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
 	}
 
-	public Person updatePerson(Person person) {
-		Person entity = repository.findById(person.getId())
+	public PersonVO updatePerson(PersonVO person) {
+		var entity = repository.findById(person.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
 
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
-		entity.setAddres(person.getAddres());
+		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
 
-		return repository.save(entity);
+		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
 	}
 
 	public void deletePerson(Long id) {

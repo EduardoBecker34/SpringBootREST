@@ -1,4 +1,4 @@
-package br.com.eduardo;
+package br.com.eduardo.data.model;
 
 public class Greeting {
 

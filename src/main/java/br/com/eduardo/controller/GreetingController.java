@@ -1,10 +1,12 @@
-package br.com.eduardo;
+package br.com.eduardo.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.eduardo.data.model.Greeting;
 
 @RestController
 public class GreetingController {
