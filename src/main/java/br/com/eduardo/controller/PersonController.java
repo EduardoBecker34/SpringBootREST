@@ -17,7 +17,7 @@ import br.com.eduardo.data.vo.PersonVO;
 import br.com.eduardo.services.PersonService;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/person/v1")
 public class PersonController {
 
 	@Autowired
