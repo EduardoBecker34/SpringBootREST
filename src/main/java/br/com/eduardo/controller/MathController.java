@@ -22,7 +22,7 @@ public class MathController {
 	public Double sum(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo)
 			throws Exception {
 		if (!numberConverter.isNumeric(numberOne) || !numberConverter.isNumeric(numberTwo)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico");
 		}
 
 		return math.sum(numberConverter.convertToDouble(numberOne), numberConverter.convertToDouble(numberTwo));
@@ -32,7 +32,7 @@ public class MathController {
 	public Double subtract(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo)
 			throws Exception {
 		if (!numberConverter.isNumeric(numberOne) || !numberConverter.isNumeric(numberTwo)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico");
 		}
 
 		return math.subtraction(numberConverter.convertToDouble(numberOne), numberConverter.convertToDouble(numberTwo));
@@ -42,7 +42,7 @@ public class MathController {
 	public Double multiplication(@PathVariable("numberOne") String numberOne,
 			@PathVariable("numberTwo") String numberTwo) throws Exception {
 		if (!numberConverter.isNumeric(numberOne) || !numberConverter.isNumeric(numberTwo)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico");
 		}
 
 		return math.multiplication(numberConverter.convertToDouble(numberOne),
@@ -53,7 +53,7 @@ public class MathController {
 	public Double division(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo)
 			throws Exception {
 		if (!numberConverter.isNumeric(numberOne) || !numberConverter.isNumeric(numberTwo)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico.");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico.");
 		}
 
 		return math.division(numberConverter.convertToDouble(numberOne), numberConverter.convertToDouble(numberTwo));
@@ -63,7 +63,7 @@ public class MathController {
 	public Double mean(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo)
 			throws Exception {
 		if (!numberConverter.isNumeric(numberOne) || !numberConverter.isNumeric(numberTwo)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico");
 		}
 
 		return math.mean(numberConverter.convertToDouble(numberOne), numberConverter.convertToDouble(numberTwo));
@@ -72,7 +72,7 @@ public class MathController {
 	@RequestMapping(value = "squareRoot/{numberOne}", method = RequestMethod.GET)
 	public Double squareRoot(@PathVariable("numberOne") String numberOne) throws Exception {
 		if (!numberConverter.isNumeric(numberOne)) {
-			throw new UnsuportedMathOperationException("Por favor, defina um valor numérico");
+			throw new UnsuportedMathOperationException("Por favor, defina um valor numÃ©rico");
 		}
 
 		return math.sqrt(numberConverter.convertToDouble(numberOne));

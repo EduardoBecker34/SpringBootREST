@@ -19,7 +19,7 @@ public class PersonService {
 
 	public PersonVO findById(Long id) {
 		var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n„o encontrada com este ID."));
+				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n√£o encontrada com este ID."));
 		
 		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
@@ -36,7 +36,7 @@ public class PersonService {
 
 	public PersonVO updatePerson(PersonVO person) {
 		var entity = repository.findById(person.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n„o encontrada com este ID."));
+				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n√£o encontrada com este ID."));
 
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
@@ -49,7 +49,7 @@ public class PersonService {
 
 	public void deletePerson(Long id) {
 		Person entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n„o encontrada com este ID."));
+				.orElseThrow(() -> new ResourceNotFoundException("Pessoa n√£o encontrada com este ID."));
 
 		repository.delete(entity);
 	}
@@ -82,7 +82,7 @@ public class PersonService {
 	 * 
 	 * person.setId(counter.incrementAndGet());
 	 * person.setFirstName("Person FirstName");
-	 * person.setLastName("Person LastName"); person.setAddres("EndereÁo: " + i);
+	 * person.setLastName("Person LastName"); person.setAddres("Endere√ßo: " + i);
 	 * person.setGender("Male");
 	 * 
 	 * return person; }
