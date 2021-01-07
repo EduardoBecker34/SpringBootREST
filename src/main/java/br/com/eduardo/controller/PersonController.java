@@ -17,28 +17,28 @@ import br.com.eduardo.data.vo.PersonVO;
 import br.com.eduardo.services.PersonService;
 
 @RestController
-@RequestMapping("/person/v1")
+@RequestMapping("/api/person/v1")
 public class PersonController {
 
 	@Autowired
 	private PersonService personServices;
 
-	@GetMapping
+	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
 	public List<PersonVO> findAll() {
 		return personServices.findAll();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
 	public PersonVO findById(@PathVariable("id") Long id) {
 		return personServices.findById(id);
 	}
 
-	@PostMapping
+	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = { "application/json", "application/xml", "application/x-yaml" })
 	public PersonVO create(@RequestBody PersonVO person) {
 		return personServices.createPerson(person);
 	}
 
-	@PutMapping
+	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = { "application/json", "application/xml", "application/x-yaml" })
 	public PersonVO update(@RequestBody PersonVO person) {
 		return personServices.updatePerson(person);
 	}
