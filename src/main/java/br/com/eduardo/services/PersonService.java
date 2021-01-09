@@ -35,7 +35,7 @@ public class PersonService {
 	}
 
 	public PersonVO updatePerson(PersonVO person) {
-		var entity = repository.findById(person.getId())
+		var entity = repository.findById(person.getKey())
 				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
 
 		entity.setFirstName(person.getFirstName());
