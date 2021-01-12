@@ -22,6 +22,7 @@ import br.com.eduardo.services.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+//@CrossOrigin
 @Api(value = "Person Endpoint", description = "Description for person", tags = { "Person Endpoint" })
 @RestController
 @RequestMapping("/api/person/v1")
@@ -30,6 +31,7 @@ public class PersonController {
 	@Autowired
 	private PersonService personServices;
 
+	//@CrossOrigin(origins = "http://localhost:8080")
 	@ApiOperation(value = "Find all people recorded")
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
 	public List<PersonVO> findAll() {
