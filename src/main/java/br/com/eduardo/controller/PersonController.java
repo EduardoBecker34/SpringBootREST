@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eduardo.data.vo.PersonVO;
 import br.com.eduardo.services.PersonService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "Person Endpoint", description = "Description for person", tags = { "Person Endpoint" })
 @RestController
 @RequestMapping("/api/person/v1")
 public class PersonController {
@@ -27,6 +30,7 @@ public class PersonController {
 	@Autowired
 	private PersonService personServices;
 
+	@ApiOperation(value = "Find all people recorded")
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
 	public List<PersonVO> findAll() {
 		List<PersonVO> persons = personServices.findAll();
@@ -38,6 +42,7 @@ public class PersonController {
 		return persons;
 	}
 
+	@ApiOperation(value = "Find a person by an id")
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
 	public PersonVO findById(@PathVariable("id") Long id) {
 		PersonVO personVO = personServices.findById(id);
@@ -48,7 +53,9 @@ public class PersonController {
 		return personVO;
 	}
 
-	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {"application/json", "application/xml", "application/x-yaml" })
+	@ApiOperation(value = "Create a person")
+	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
+			"application/json", "application/xml", "application/x-yaml" })
 	public PersonVO create(@RequestBody PersonVO person) {
 		PersonVO personVO = personServices.createPerson(person);
 
@@ -59,7 +66,9 @@ public class PersonController {
 		return personVO;
 	}
 
-	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {"application/json", "application/xml", "application/x-yaml" })
+	@ApiOperation(value = "Update a person")
+	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
+			"application/json", "application/xml", "application/x-yaml" })
 	public PersonVO update(@RequestBody PersonVO person) {
 		PersonVO personVO = personServices.updatePerson(person);
 
@@ -70,6 +79,7 @@ public class PersonController {
 		return personVO;
 	}
 
+	@ApiOperation(value = "Delete a person")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		personServices.deletePerson(id);
