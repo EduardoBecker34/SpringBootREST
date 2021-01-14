@@ -20,11 +20,11 @@ public class WebConfig implements WebMvcConfigurer {
 		converters.add(new YamlJackson2HttpMessageConverter());
 	}
 
-	// Todos os recursos ficam disponíveis para todas origens
+	// Todos os recursos ficam disponÃ­veis para todas origens
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
 	}
-	
+
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		configurer.favorParameter(false)
