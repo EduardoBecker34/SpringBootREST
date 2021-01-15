@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 
-@JsonPropertyOrder({ "id", "address", "first_name", "last_name", "gender" })
+@JsonPropertyOrder({ "id", "address", "first_name", "last_name", "gender", "enabled" })
 public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,14 +17,20 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 	@Mapping("id")
 	@JsonProperty("id")
 	private Long key;
+	
 	@JsonProperty("first_name")
 	private String firstName;
+	
 	@JsonProperty("last_name")
 	private String lastName;
+	
 	private String address;
+	
 	@JsonIgnore
 	private String gender;
-
+	
+	private boolean enabled;
+	
 	public PersonVO() {
 	}
 
@@ -68,11 +74,20 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 		this.gender = gender;
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + (enabled ? 1231 : 1237);
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
@@ -93,6 +108,8 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 			if (other.address != null)
 				return false;
 		} else if (!address.equals(other.address))
+			return false;
+		if (enabled != other.enabled)
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)

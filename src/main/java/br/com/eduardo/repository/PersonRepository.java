@@ -1,6 +1,9 @@
 package br.com.eduardo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.eduardo.data.model.Person;
@@ -8,4 +11,8 @@ import br.com.eduardo.data.model.Person;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long>{
 
+	@Modifying //Usar quando criar querys DDL, para SELECT não é necessário
+	@Query("UPDATE Person p SET p.enabled = false WHERE p.id = :id")
+	void disablePersons(@Param("id") Long idName);
+	
 }

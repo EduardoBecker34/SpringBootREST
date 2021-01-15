@@ -2,6 +2,8 @@ package br.com.eduardo.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class PersonService {
 	public PersonVO findById(Long id) {
 		var entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
-		
+
 		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 
@@ -47,44 +49,20 @@ public class PersonService {
 		return vo;
 	}
 
+	@Transactional //Informa ao server que o ACID devem ser observados
+	public PersonVO disablePerson(Long id) {
+		repository.disablePersons(id);
+
+		var entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
+
+		return DozerConverter.parseObject(entity, PersonVO.class);
+	}
+
 	public void deletePerson(Long id) {
 		Person entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com este ID."));
 
 		repository.delete(entity);
 	}
-
-	/*
-	 * public Person findById(String id) { Person person = new Person();
-	 * 
-	 * person.setId(counter.incrementAndGet()); person.setFirstName("Eduardo");
-	 * person.setLastName("Becker");
-	 * person.setAddres("Avenida Brasil, Passo Fundo, RS");
-	 * person.setGender("male");
-	 * 
-	 * return person; }
-	 */
-
-	/*
-	 * public List<Person> findAll() { List<Person> persons = new
-	 * ArrayList<Person>();
-	 * 
-	 * // Mock do objeto para testes
-	 * 
-	 * for (int i = 0; i <= 7; i++) { Person person = mockPerson(i);
-	 * persons.add(person); }
-	 * 
-	 * return persons; }
-	 */
-
-	/*
-	 * private Person mockPerson(int i) { Person person = new Person();
-	 * 
-	 * person.setId(counter.incrementAndGet());
-	 * person.setFirstName("Person FirstName");
-	 * person.setLastName("Person LastName"); person.setAddres("Endereço: " + i);
-	 * person.setGender("Male");
-	 * 
-	 * return person; }
-	 */
 }

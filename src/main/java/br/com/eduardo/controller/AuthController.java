@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.eduardo.repository.UserRepository;
 import br.com.eduardo.security.AccountCredentialsVO;
 import br.com.eduardo.security.jwt.JwtTokenProvider;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Api(tags = "Authentication Endpoint")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
