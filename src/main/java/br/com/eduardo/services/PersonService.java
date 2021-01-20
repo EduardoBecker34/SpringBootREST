@@ -1,10 +1,10 @@
 package br.com.eduardo.services;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.eduardo.converter.DozerConverter;
@@ -26,8 +26,18 @@ public class PersonService {
 		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 
-	public List<PersonVO> findAll() {
-		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
+	public Page<PersonVO> findPersonByName(String firstName, Pageable pageable) {
+		var page = repository.findPersonByName(firstName, pageable); // Retorna uma lista de Pages + .getContent transforma em um List
+		return page.map(this::convertToPersonVO);
+	}
+
+	public Page<PersonVO> findAll(Pageable pageable) {
+		var page = repository.findAll(pageable); // Retorna uma lista de Pages + .getContent transforma em um List
+		return page.map(this::convertToPersonVO);
+	}
+	
+	private PersonVO convertToPersonVO(Person entity) {
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 
 	public PersonVO createPerson(PersonVO person) {
@@ -49,7 +59,7 @@ public class PersonService {
 		return vo;
 	}
 
-	@Transactional //Informa ao server que o ACID devem ser observados
+	@Transactional // Informa ao server que o ACID devem ser observados
 	public PersonVO disablePerson(Long id) {
 		repository.disablePersons(id);
 

@@ -1,8 +1,8 @@
 package br.com.eduardo.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.eduardo.converter.DozerConverter;
@@ -24,8 +24,13 @@ public class BookService {
 		return DozerConverter.parseObject(entity, BookVO.class);
 	}
 
-	public List<BookVO> findAll() {
-		return DozerConverter.parseListObjects(repository.findAll(), BookVO.class);
+	public Page<BookVO> findAll(Pageable pageable) {
+		var page = repository.findAll(pageable); // Retorna uma lista de Pages + .getContent transforma em um List
+		return page.map(this::convertToBookVO);
+	}
+
+	private BookVO convertToBookVO(Book entity) {
+		return DozerConverter.parseObject(entity, BookVO.class);
 	}
 
 	public BookVO createBook(BookVO book) {

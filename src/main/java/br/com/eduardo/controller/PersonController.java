@@ -2,9 +2,13 @@ package br.com.eduardo.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eduardo.data.vo.PersonVO;
@@ -32,18 +37,60 @@ public class PersonController {
 	@Autowired
 	private PersonService personServices;
 
-	//@CrossOrigin(origins = "http://localhost:8080")
+	@ApiOperation(value = "Find all people recorded")
+	@GetMapping(value = "/findPersonByName/{firstName}", produces = { "application/json", "application/xml", "application/x-yaml" })
+	public ResponseEntity<CollectionModel<PersonVO>> findPersonByName(
+			@PathVariable("firstName") String firstName,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "limit", defaultValue = "12") int limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+		
+		//Compara String ignorando case e atribui o Sort Direction conforme parâmetro
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+		
+		Page<PersonVO> persons = personServices.findPersonByName(firstName, pageable);
+		persons.stream().forEach(p -> {
+			Link link = WebMvcLinkBuilder.linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel();
+			p.add(link);
+		});
+		
+		return ResponseEntity.ok(CollectionModel.of(persons));
+	}
+	
 	@ApiOperation(value = "Find all people recorded")
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-	public List<PersonVO> findAll() {
-		List<PersonVO> persons = personServices.findAll();
+	public ResponseEntity<CollectionModel<PersonVO>> findAll(
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "limit", defaultValue = "12") int limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+
+		//Compara String ignorando case e atribui o Sort Direction conforme parâmetro
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+
+		Page<PersonVO> persons = personServices.findAll(pageable);
 		persons.stream().forEach(p -> {
 			Link link = WebMvcLinkBuilder.linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel();
 			p.add(link);
 		});
 
-		return persons;
+		return ResponseEntity.ok(CollectionModel.of(persons));
 	}
+
+	// @CrossOrigin(origins = "http://localhost:8080")
+	/*
+	 * @ApiOperation(value = "Find all people recorded")
+	 * 
+	 * @GetMapping(produces = { "application/json", "application/xml",
+	 * "application/x-yaml" }) public List<PersonVO> findAll() { List<PersonVO>
+	 * persons = personServices.findAll(); persons.stream().forEach(p -> { Link link
+	 * =
+	 * WebMvcLinkBuilder.linkTo(methodOn(PersonController.class).findById(p.getKey()
+	 * )).withSelfRel(); p.add(link); });
+	 * 
+	 * return persons; }
+	 */
 
 	@ApiOperation(value = "Find a person by an id")
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
@@ -92,7 +139,7 @@ public class PersonController {
 
 		return personVO;
 	}
-	
+
 	@ApiOperation(value = "Delete a person")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {

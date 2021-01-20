@@ -5,6 +5,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eduardo.data.vo.BookVO;
+import br.com.eduardo.data.vo.PersonVO;
 import br.com.eduardo.services.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,14 +40,22 @@ public class BookController {
 
 	@ApiOperation(value = "Find all books recorded")
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-	public List<BookVO> findAll() {
-		List<BookVO> books = bookServices.findAll();
+	public ResponseEntity<CollectionModel<BookVO>> findAll(
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "limit", defaultValue = "12") int limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+		//Compara String ignorando case e atribui o Sort Direction conforme parâmetro
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+		
+		Page<BookVO> books = bookServices.findAll(pageable);
+		
 		books.stream().forEach(p -> {
 			Link link = WebMvcLinkBuilder.linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel();
 			p.add(link);
 		});
-
-		return books;
+		
+		return ResponseEntity.ok(CollectionModel.of(books));
 	}
 
 	@ApiOperation(value = "Find a book by an id")
