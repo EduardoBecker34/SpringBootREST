@@ -8,7 +8,7 @@ python:
 services: docker
 before_install:
   - sudo apt-get update
-  - cd SpringBootREST/SpringBootREST/
+  - cd SpringBootREST/
   - echo "Começando package do Maven."
   - mvn clean package
   - cd ..
