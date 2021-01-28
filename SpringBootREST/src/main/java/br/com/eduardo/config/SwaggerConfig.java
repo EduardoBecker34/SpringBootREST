@@ -25,13 +25,13 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("RESTful API com Spring Boot", 
+		return new ApiInfo("RESTful API com Spring Boot - Udemy", 
 				"API para estudos e retorno de dados de teste.",
 				"v1", 
-				"URL de Termos de serviço", 
+				"URL de Termos de serviÃ§o", 
 				new Contact("Eduardo Becker da Luz", "https://github.com/EduardoBecker34/SpringBootREST.git", "eduardobeckerdaluz@gmail.com"), 
-				"Licença", 
-				"URL da Licença",
+				"LicenÃ§a", 
+				"URL da LicenÃ§a",
 				Collections.emptyList());
 	}
 
