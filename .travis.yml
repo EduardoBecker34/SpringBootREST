@@ -38,7 +38,7 @@ after_success:
   - export PATH=$PATH:$HOME/.local/bin
   - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_URL
   - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
-  - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID 
+  - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID
   - sudo add-apt-repository ppa:eugenesan/ppa
   - sudo apt-get update
   - sudo apt-get install jq -y
